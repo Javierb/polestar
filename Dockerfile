@@ -7,9 +7,12 @@ WORKDIR /app
 ADD . /app
 
 # Install common dependencies (psycopg2)
+RUN apk add --no-cache postgresql-dev
+
 RUN apk update \
-    && apk add --no-cache --virtual .build-deps build-base linux-headers gcc musl-dev postgresql-dev\
+    && apk add --no-cache --virtual .build-deps build-base linux-headers gcc musl-dev \
     && pip install --upgrade pip \
     && pip install -r requirements.txt \
     && apk del .build-deps
 
+CMD python manage.py migrate
