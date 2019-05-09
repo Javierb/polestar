@@ -10,10 +10,6 @@ services:
       - backend
     ports:
       - "5432:5432"
-    environment:
-      - POSTGRES_PASSWORD=${SQL_PASSWORD}
-      - POSTGRES_USER=${SQL_USER}
-      - POSTGRES_DB=${SQL_DATABASE}
 
   api:
     restart: always
@@ -23,13 +19,6 @@ services:
      - .:/app
     ports:
       - "8000:8000"
-    environment:
-      - SQL_ENGINE=django.db.backends.postgresql
-      - SQL_DATABASE=${SQL_DATABASE}
-      - SQL_USER=${SQL_USER}
-      - SQL_PASSWORD=${SQL_PASSWORD}
-      - SQL_HOST=${SQL_HOST}
-      - SQL_PORT=${SQL_PORT}
     networks:
       - backend
     depends_on:
