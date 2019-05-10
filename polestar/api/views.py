@@ -14,8 +14,7 @@ class ShipViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = ShipserSerializer
 
 
-class PositionList(generics.ListAPIView,
-                    viewsets.GenericViewSet):
+class PositionList(generics.ListAPIView, viewsets.GenericViewSet):
     """
     API endpoint that allows groups to be viewed or edited.
     """
@@ -27,4 +26,4 @@ class PositionList(generics.ListAPIView,
         the user as determined by the username portion of the URL.
         """
         imo = self.kwargs['imo']
-        return Position.objects.filter(ship__imo_number=imo)
+        return Position.objects.filter(ship__imo_number=imo).distinct()

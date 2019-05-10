@@ -4,7 +4,13 @@
 [Docker and Docker Compose](https://docs.docker.com/compose/install/)
 
 ## Quick start
-Run ``docker-compose up`` 
+Clone the repository from github and start the services with docker compose.
+
+``git clone https://github.com/Javierb/polestar.git``
+
+``cd polestar``
+
+``docker-compose up``
 
 - To see interface go to: [http://localhost:8000/](http://localhost:8000/)
 - To browse the API go to: [http://localhost:8000/api/](http://localhost:8000/api/)

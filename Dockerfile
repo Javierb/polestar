@@ -14,7 +14,3 @@ RUN apk update \
     && pip install --upgrade pip \
     && pip install -r requirements.txt \
     && apk del .build-deps
-
-CMD python manage.py migrate \
-    && python manage.py loaddata ships \
-    && python manage.py import_data
