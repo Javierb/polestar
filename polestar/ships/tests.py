@@ -8,11 +8,14 @@ from django.core.management.base import CommandError
 import io
 
 
-class ShipTestCase(TestCase):
+class BaseShipTestCase(TestCase):
     def setUp(self):
         Ship.objects.create(name="ship1", imo_number="9632179")
         Ship.objects.create(name="ship2", imo_number="9247455")
+        Ship.objects.create(name="ship3", imo_number="9595321")
 
+
+class ShipTestCase(BaseShipTestCase):
     def test_ship_str(self):
         s1 = Ship.objects.get(name="ship1")
         s2 = Ship.objects.get(name="ship2")
@@ -34,27 +37,22 @@ class ShipTestCase(TestCase):
         self.assertTrue(s1.updated > s2.updated)
 
 
-class PositionTestCase(TestCase):
-    def setUp(self):
-        s = Ship.objects.create(name="ship1", imo_number="9632179")
-        s.positions.create(date=timezone.now(), latitude=17.88356590271, longitude=-63.2951011657715)
-
+class PositionTestCase(BaseShipTestCase):
     def test_position_str(self):
         s1 = Ship.objects.get(name="ship1")
+        s1.positions.create(date=timezone.now(), latitude=17.88356590271, longitude=-63.2951011657715)
         p1 = Position.objects.first()
         self.assertIn(p1, s1.positions.all())
+
         p2 = Position.objects.create(date=timezone.now(), latitude=17.88356590271, longitude=-63.2951011657715)
         s1.positions.add(p2)
         self.assertIn(p2, s1.positions.all())
+        
         s1.positions.remove(p2)
         self.assertNotIn(p2, s1.positions.all())
 
-class PositionManagementCase(TestCase):
-    def setUp(self):
-        Ship.objects.create(name="ship1", imo_number="9632179")
-        Ship.objects.create(name="ship2", imo_number="9247455")
-        Ship.objects.create(name="ship3", imo_number="9595321")
 
+class PositionManagementCase(BaseShipTestCase):
     def test_command(self):
         out = io.StringIO()
         management.call_command('import_data', stdout=out)
