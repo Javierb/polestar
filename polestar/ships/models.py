@@ -6,6 +6,9 @@ class Position(models.Model):
     latitude = models.FloatField()
     longitude = models.FloatField()
 
+    def __str__(self):
+        return '{} - ({}, {})'.format(self.date, self.latitude, self.longitude)
+
     class Meta:
         ordering = ('-date',)
 
