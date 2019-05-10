@@ -21,6 +21,14 @@ class ShipTestCase(TestCase):
         with self.assertRaises(IntegrityError):
             s3.save()
 
+    def test_created_updated(self):
+        s1 = Ship.objects.get(name="ship1")
+        s2 = Ship.objects.get(name="ship2")
+        self.assertNotEqual(s1.updated, s1.created)
+        self.assertTrue(s1.updated < s2.updated)
+        s1.save()
+        self.assertTrue(s1.updated > s2.updated)
+
 
 class PositionTestCase(TestCase):
     def setUp(self):
