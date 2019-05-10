@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'polestar.ships',
     'rest_framework',
+    'polestar.api',
 ]
 
 MIDDLEWARE = [
