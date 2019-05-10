@@ -3,17 +3,21 @@ from .models import Ship, Position
 from django.db.utils import IntegrityError
 from django.utils import timezone
 
+from django.core import management
+from django.core.management.base import CommandError
+import io
+
 
 class ShipTestCase(TestCase):
     def setUp(self):
-        Ship.objects.create(name="ship1", imo_number="1234567")
-        Ship.objects.create(name="ship2", imo_number="7654321")
+        Ship.objects.create(name="ship1", imo_number="9632179")
+        Ship.objects.create(name="ship2", imo_number="9247455")
 
     def test_ship_str(self):
         s1 = Ship.objects.get(name="ship1")
         s2 = Ship.objects.get(name="ship2")
-        self.assertEqual(str(s1), 'ship1 (1234567)')
-        self.assertEqual(str(s2), 'ship2 (7654321)')
+        self.assertEqual(str(s1), 'ship1 (9632179)')
+        self.assertEqual(str(s2), 'ship2 (9247455)')
 
     def test_ship_integrity(self):
         s1 = Ship.objects.get(name="ship1")
@@ -32,7 +36,7 @@ class ShipTestCase(TestCase):
 
 class PositionTestCase(TestCase):
     def setUp(self):
-        s = Ship.objects.create(name="ship1", imo_number="1234567")
+        s = Ship.objects.create(name="ship1", imo_number="9632179")
         s.positions.create(date=timezone.now(), latitude=17.88356590271, longitude=-63.2951011657715)
 
     def test_position_str(self):
@@ -44,3 +48,14 @@ class PositionTestCase(TestCase):
         self.assertIn(p2, s1.positions.all())
         s1.positions.remove(p2)
         self.assertNotIn(p2, s1.positions.all())
+
+class PositionManagementCase(TestCase):
+    def setUp(self):
+        Ship.objects.create(name="ship1", imo_number="9632179")
+        Ship.objects.create(name="ship2", imo_number="9247455")
+        Ship.objects.create(name="ship3", imo_number="9595321")
+
+    def test_command(self):
+        out = io.StringIO()
+        management.call_command('import_data', stdout=out)
+        self.assertIn("Successfully imported", out.getvalue())
