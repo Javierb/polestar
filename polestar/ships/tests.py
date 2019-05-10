@@ -1,6 +1,8 @@
 from django.test import TestCase
-from .models import Ship
+from .models import Ship, Position
 from django.db.utils import IntegrityError
+from django.utils import timezone
+
 
 class ShipTestCase(TestCase):
     def setUp(self):
@@ -20,3 +22,17 @@ class ShipTestCase(TestCase):
             s3.save()
 
 
+class PositionTestCase(TestCase):
+    def setUp(self):
+        s = Ship.objects.create(name="ship1", imo_number="1234567")
+        s.positions.create(date=timezone.now(), latitude=17.88356590271, longitude=-63.2951011657715)
+
+    def test_position_str(self):
+        s1 = Ship.objects.get(name="ship1")
+        p1 = Position.objects.first()
+        self.assertIn(p1, s1.positions.all())
+        p2 = Position.objects.create(date=timezone.now(), latitude=17.88356590271, longitude=-63.2951011657715)
+        s1.positions.add(p2)
+        self.assertIn(p2, s1.positions.all())
+        s1.positions.remove(p2)
+        self.assertNotIn(p2, s1.positions.all())
