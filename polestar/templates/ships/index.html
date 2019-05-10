@@ -12,12 +12,18 @@
         width: 900px;                                                                                                  
         margin: auto;                                                                                                  
       }                                                                                                                
-      h1 { text-align: center; }                                                                                       
+      h1 { text-align: center; }
+      .credits { text-align: center; }                                                                                      
     </style>                                                                                                           
   </head>                                                                                                              
   <body>                                                                                                               
     <h1>Python Assignment</h1>                                                                                    
-    <div id="mapid"></div>                                                                                             
+    <div id="mapid"></div>
+    <div>
+      <p class="credits">
+        Assignment delivered by <a href="{{ author_url }}">{{ author_name }}</a>
+      </p>
+    </div>                                                                                             
                                                                                                                        
     <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"                                                      
             integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="

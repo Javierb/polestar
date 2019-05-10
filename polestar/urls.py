@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from polestar.api import views
+from polestar.ships.views import HomePageView
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
@@ -25,6 +26,7 @@ router.register(r'ships', views.ShipViewSet)
 router.register(r'positions/(?P<imo>\d+)', views.PositionList, basename='position')
 
 urlpatterns = [
+    path('', HomePageView.as_view(), name='home'),
     path('api/', include(router.urls)),
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
