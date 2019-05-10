@@ -1,5 +1,12 @@
 from django.db import models
 
+class CreatedUpdated(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
 
 class Position(models.Model):
     date = models.DateTimeField()
@@ -13,7 +20,7 @@ class Position(models.Model):
         ordering = ('-date',)
 
 
-class Ship(models.Model):
+class Ship(CreatedUpdated):
     name = models.CharField(max_length=70)
     imo_number = models.PositiveIntegerField(verbose_name="IMO Number")
     positions = models.ManyToManyField(Position)
