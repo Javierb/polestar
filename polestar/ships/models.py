@@ -7,7 +7,7 @@ class Position(models.Model):
     longitude = models.FloatField()
 
     class Meta:
-        ordering = ('date',)
+        ordering = ('-date',)
 
 
 class Ship(models.Model):
