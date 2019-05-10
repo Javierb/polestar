@@ -1,0 +1,31 @@
+version: '3.7'
+
+services:
+  db:
+    restart: always
+    image: postgres:alpine
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks: 
+      - backend
+    ports:
+      - "5432:5432"
+
+  api:
+    restart: always
+    build: .
+    entrypoint: ./entrypoint.sh
+    volumes:
+     - .:/app
+    ports:
+      - "8000:8000"
+    networks:
+      - backend
+    depends_on:
+      - db
+
+networks:
+  backend:
+
+volumes:
+  db-data:
