@@ -49,6 +49,7 @@ class PositionManagementCase(BaseShipTestCase):
 
     def test_command_integrity(self):
         out = io.StringIO()
-        with self.assertRaises(IntegrityError):
-            management.call_command('import_data', stdout=out)
-            management.call_command('import_data', stdout=out)
+        management.call_command('import_data', stdout=out)
+        positions = Position.objects.count()
+        management.call_command('import_data', stdout=out)
+        self.assertEqual(Position.objects.count(), positions)

@@ -23,14 +23,16 @@ class Command(BaseCommand):
         
         with options.get('file') as f:
             csv_reader = csv.reader(f, delimiter=',')
-            with transaction.atomic():
-                for row in csv_reader:
+            for row in csv_reader:
+                try:
                     Position.objects.create(
                         ship=ships[int(row[0])], 
                         date=row[1], 
                         latitude=float(row[2]), 
                         longitude=float(row[3])
                     )
-                    imported += 1                   
+                    imported += 1
+                except IntegrityError:
+                    pass  
 
         self.stdout.write(self.style.SUCCESS('Successfully imported "%s" positions.' % imported))

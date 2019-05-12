@@ -28,6 +28,7 @@ Clone the repository from github and start the services with docker compose.
 - Postgres
 
 ## Possible improvements
-- Add a Jenkins server to docker-compose file for continuous integration
-- Front-end framwork integration. (i.e: React + Bootstrap)
+- Add a Jenkins server to docker-compose file for continuous integration.
+- Front-end framwork integration. (i.e: React + Bootstrap).
+- Sphinx documentation.
 
