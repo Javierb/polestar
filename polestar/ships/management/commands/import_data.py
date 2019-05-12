@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
+from django.db.utils import IntegrityError
 from polestar.ships.models import Position, Ship
 from django.db import transaction
 from django.conf import settings
@@ -24,8 +25,12 @@ class Command(BaseCommand):
             csv_reader = csv.reader(f, delimiter=',')
             with transaction.atomic():
                 for row in csv_reader:
-                    s = ships[int(row[0])]
-                    s.positions.create(date=row[1], latitude=float(row[2]), longitude=float(row[3]))
-                    imported += 1
+                    Position.objects.create(
+                        ship=ships[int(row[0])], 
+                        date=row[1], 
+                        latitude=float(row[2]), 
+                        longitude=float(row[3])
+                    )
+                    imported += 1                   
 
         self.stdout.write(self.style.SUCCESS('Successfully imported "%s" positions.' % imported))
