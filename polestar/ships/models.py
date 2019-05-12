@@ -31,3 +31,4 @@ class Position(models.Model):
 
     class Meta:
         ordering = ('-date',)
+        unique_together = ["imo_number", "date"]
