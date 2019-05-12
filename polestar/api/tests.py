@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.test import Client
-from polestar.ships.models import Ship
+from polestar.ships.models import Ship, Position
 from django.utils import timezone
 
 class APITest(TestCase):
@@ -35,7 +35,7 @@ class APITest(TestCase):
     
     def test_positions_content(self):
         s = Ship.objects.get(imo_number="9632179")
-        s.positions.create(date=timezone.now(), latitude=17.88356590271, longitude=-63.2951011657715)
+        Position.objects.create(ship=s, date=timezone.now(), latitude=17.88356590271, longitude=-63.2951011657715)
         client = Client()
         response = client.get('/api/positions/{}/'.format(s.imo_number))
         self.assertIn(b'latitude', response.content)
