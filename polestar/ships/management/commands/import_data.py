@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
+from django.db.utils import IntegrityError
 from polestar.ships.models import Position, Ship
 from django.db import transaction
 from django.conf import settings
@@ -9,6 +10,10 @@ import os
 
 
 class Command(BaseCommand):
+    """
+    Command that imports position data from a csv with the following cols:
+    imo, datetime, latitude, longitude
+    """
     help = 'Imports ships location data from the assignment.'
 
     def add_arguments(self, parser):
@@ -22,10 +27,16 @@ class Command(BaseCommand):
         
         with options.get('file') as f:
             csv_reader = csv.reader(f, delimiter=',')
-            with transaction.atomic():
-                for row in csv_reader:
-                    s = ships[int(row[0])]
-                    s.positions.create(date=row[1], latitude=float(row[2]), longitude=float(row[3]))
+            for row in csv_reader:
+                try:
+                    Position.objects.create(
+                        ship=ships[int(row[0])], 
+                        date=row[1], 
+                        latitude=float(row[2]), 
+                        longitude=float(row[3])
+                    )
                     imported += 1
+                except IntegrityError:
+                    pass  
 
         self.stdout.write(self.style.SUCCESS('Successfully imported "%s" positions.' % imported))
