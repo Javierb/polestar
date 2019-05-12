@@ -21,7 +21,7 @@ class Ship(CreatedUpdated):
 
 
 class Position(models.Model):
-    imo_number = models.ForeignKey(Ship, on_delete=models.PROTECT, related_name="ships")
+    ship = models.ForeignKey(Ship, on_delete=models.PROTECT, related_name="ships")
     date = models.DateTimeField()
     latitude = models.FloatField()
     longitude = models.FloatField()
@@ -31,4 +31,4 @@ class Position(models.Model):
 
     class Meta:
         ordering = ('-date',)
-        unique_together = ["imo_number", "date"]
+        unique_together = ["ship", "date"]
