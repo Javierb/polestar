@@ -11,7 +11,6 @@ class CreatedUpdated(models.Model):
 class Ship(CreatedUpdated):
     name = models.CharField(max_length=70)
     imo_number = models.PositiveIntegerField(verbose_name="IMO Number")
-    # positions = models.ManyToManyField(Position)
 
     def __str__(self):
         return '{} ({})'.format(self.name, self.imo_number)
@@ -21,7 +20,7 @@ class Ship(CreatedUpdated):
 
 
 class Position(models.Model):
-    ship = models.ForeignKey(Ship, on_delete=models.PROTECT, related_name="ships")
+    ship = models.ForeignKey(Ship, on_delete=models.PROTECT, related_name="positions")
     date = models.DateTimeField()
     latitude = models.FloatField()
     longitude = models.FloatField()
