@@ -8,7 +8,20 @@ class CreatedUpdated(models.Model):
         abstract = True
 
 
+class Ship(CreatedUpdated):
+    name = models.CharField(max_length=70)
+    imo_number = models.PositiveIntegerField(verbose_name="IMO Number")
+    # positions = models.ManyToManyField(Position)
+
+    def __str__(self):
+        return '{} ({})'.format(self.name, self.imo_number)
+
+    class Meta:
+        unique_together = ['name', 'imo_number']
+
+
 class Position(models.Model):
+    imo_number = models.ForeignKey(Ship, on_delete=models.PROTECT, related_name="ships")
     date = models.DateTimeField()
     latitude = models.FloatField()
     longitude = models.FloatField()
@@ -18,15 +31,3 @@ class Position(models.Model):
 
     class Meta:
         ordering = ('-date',)
-
-
-class Ship(CreatedUpdated):
-    name = models.CharField(max_length=70)
-    imo_number = models.PositiveIntegerField(verbose_name="IMO Number")
-    positions = models.ManyToManyField(Position)
-
-    def __str__(self):
-        return '{} ({})'.format(self.name, self.imo_number)
-
-    class Meta:
-        unique_together = ['name', 'imo_number']
