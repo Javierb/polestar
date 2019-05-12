@@ -10,6 +10,10 @@ import os
 
 
 class Command(BaseCommand):
+    """
+    Command that imports position data from a csv with the following cols:
+    imo, datetime, latitude, longitude
+    """
     help = 'Imports ships location data from the assignment.'
 
     def add_arguments(self, parser):
