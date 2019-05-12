@@ -46,3 +46,9 @@ class PositionManagementCase(BaseShipTestCase):
         out = io.StringIO()
         management.call_command('import_data', stdout=out)
         self.assertIn("Successfully imported", out.getvalue())
+
+    def test_command_integrity(self):
+        out = io.StringIO()
+        with self.assertRaises(IntegrityError):
+            management.call_command('import_data', stdout=out)
+            management.call_command('import_data', stdout=out)
