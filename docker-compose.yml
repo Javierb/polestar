@@ -14,7 +14,7 @@ services:
   api:
     restart: always
     build: .
-    entrypoint: ./entrypoint.sh
+    entrypoint: ./wait-for.sh db:5432 -- ./entrypoint.sh
     volumes:
      - .:/app
     ports:
